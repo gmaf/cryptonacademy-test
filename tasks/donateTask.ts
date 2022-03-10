@@ -1,10 +1,8 @@
 import { task, types } from 'hardhat/config';
-import { includes } from 'lodash';
 import '@nomiclabs/hardhat-ethers';
 
-import { isContract } from '../utils/contractUtils';
+import { isContract, isCorrectUnit } from '../utils/contractUtils';
 
-const validUnits = ['wei', 'gwei', 'eth'];
 // Task for making donations
 // Example: npx hardhat donate --network localhost --contract 0x5FbDB2315678afecb367f032d93F642f64180aa3 --amount 1 --unit gwei
 task('donate', 'Donate some money')
@@ -12,8 +10,9 @@ task('donate', 'Donate some money')
     .addParam('amount', 'Amount donated in units parameter. Default is 0.', '0', types.string)
     .addParam('unit', 'Specify units (wei, gwei, eth) for provided amount. Default is wei.', 'wei', types.string)
     .setAction(async ({ contract, amount, unit }, { ethers }) => {
-        if (!includes(validUnits, unit)) {
-            console.error('--unit parameter is incorrect. It must be one of: [wei, gwei, eth]');
+        const unitCheck = isCorrectUnit(unit);
+        if (unitCheck.isError) {
+            console.error(`--unit parameter is incorrect. Reason: ${unitCheck.errMsg}`);
             return;
         }
 
