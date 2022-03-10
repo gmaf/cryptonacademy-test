@@ -1,10 +1,10 @@
 // Imports
-import { ethers } from "hardhat";
-import * as chai from "chai";
-import { assert, expect } from "chai";
-import { BigNumber, Contract } from "ethers";
-import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/dist/src/signer-with-address";
-import { solidity } from "ethereum-waffle";
+import { ethers } from 'hardhat';
+import * as chai from 'chai';
+import { assert, expect } from 'chai';
+import { BigNumber, Contract } from 'ethers';
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/dist/src/signer-with-address';
+import { solidity } from 'ethereum-waffle';
 
 chai.use(solidity);
 
@@ -12,7 +12,7 @@ chai.use(solidity);
 const minGasPrice = 10000000000;
 const getGwei = (_amountGwei: number) => ethers.utils.parseUnits(_amountGwei.toString(), 'gwei');
 
-describe("Donations contract", function () {
+describe('Donations contract', function () {
     let donationsContract: Contract;
     let contractOwner: SignerWithAddress;
     let account1: SignerWithAddress;
@@ -22,14 +22,14 @@ describe("Donations contract", function () {
     beforeEach(async function () {
         [contractOwner, account1, account2] = await ethers.getSigners();
 
-        const DonationsFactory = await ethers.getContractFactory("Donations");
+        const DonationsFactory = await ethers.getContractFactory('Donations');
         donationsContract = await DonationsFactory.deploy({ gasPrice: minGasPrice });
 
         await donationsContract.deployed();
         donationsContractAddress = donationsContract.address;
     });
-    describe("Deployment", function () {
-        it("Should set the correct contract owner", async function () {
+    describe('Deployment', function () {
+        it('Should set the correct contract owner', async function () {
             // Arrange
             const expectedOwnerAddress = contractOwner.address;
             // Act
@@ -39,8 +39,8 @@ describe("Donations contract", function () {
         });
     });
 
-    describe("Donations", function () {
-        it("Should save amount by donater address", async function () {
+    describe('Donations', function () {
+        it('Should save amount by donater address', async function () {
             // Arrange
             const donationAmount1 = getGwei(1);
             const donationAmount2 = getGwei(2);
@@ -62,7 +62,7 @@ describe("Donations contract", function () {
             expect(donationAmount1.add(donationAmount2)).to.equal(donationsContractBalance);
         });
 
-        it("Should raise error when donated amount = 0", async function () {
+        it('Should raise error when donated amount = 0', async function () {
             // Arrange
             const zeroAmount = getGwei(0);
 
@@ -70,7 +70,7 @@ describe("Donations contract", function () {
             try {
                 const donation = await donationsContract.connect(account1).donate({ value: zeroAmount });
                 await donation.wait();
-                expect.fail("Exception not thrown");
+                expect.fail('Exception not thrown');
             }
             catch (err: any) {
                 // Assert
@@ -78,7 +78,7 @@ describe("Donations contract", function () {
             }
         });
 
-        it("Should give all donation addresses without duplicates", async function () {
+        it('Should give all donation addresses without duplicates', async function () {
             // Arrange
             const donationAmount1 = getGwei(1);
             const donationAmount2 = getGwei(2);
@@ -102,8 +102,8 @@ describe("Donations contract", function () {
             expect(allDonatedAddresses).to.have.members([account1.address, account2.address]);
         });
     });
-    describe("Withdrawals", function () {
-        it("Should allow withdrawals for contract owner", async function () {
+    describe('Withdrawals', function () {
+        it('Should allow withdrawals for contract owner', async function () {
             // Arrange
             const donationAmount = getGwei(5);
             const withdrawAmount = getGwei(1);
@@ -127,7 +127,7 @@ describe("Donations contract", function () {
             expect(account1BalanceAfterWithdrawal).equals(account1BalanceBeforeWithdrawal.add(withdrawAmount));
         });
 
-        it("Should disallow withdrawals for anyone except contract owner", async function () {
+        it('Should disallow withdrawals for anyone except contract owner', async function () {
             // Arrange
             const donationAmount = getGwei(5);
             const withdrawAmount = getGwei(1);
@@ -138,7 +138,7 @@ describe("Donations contract", function () {
             try {
                 const withdrawal = await donationsContract.connect(account1).withdraw(account1.address, withdrawAmount);
                 await withdrawal.wait();
-                expect.fail("Exception not thrown");
+                expect.fail('Exception not thrown');
             }
             catch (err: any) {
                 // Assert
@@ -146,7 +146,7 @@ describe("Donations contract", function () {
             }
         });
 
-        it("Should disallow withdrawals if withdrawal is zero", async function () {
+        it('Should disallow withdrawals if withdrawal is zero', async function () {
             // Arrange
             const donationAmount = getGwei(5);
             const zeroWithdrawAmount = BigNumber.from(0);
@@ -157,7 +157,7 @@ describe("Donations contract", function () {
             try {
                 const withdrawal = await donationsContract.connect(contractOwner).withdraw(account1.address, zeroWithdrawAmount);
                 await withdrawal.wait();
-                expect.fail("Exception not thrown");
+                expect.fail('Exception not thrown');
             }
             catch (err: any) {
                 // Assert
@@ -165,7 +165,7 @@ describe("Donations contract", function () {
             }
         });
 
-        it("Should disallow withdrawals if the contract has insufficient balance", async function () {
+        it('Should disallow withdrawals if the contract has insufficient balance', async function () {
             // Arrange
             const donationAmount = getGwei(5);
             const withdrawAmount = donationAmount.add(1);
@@ -176,7 +176,7 @@ describe("Donations contract", function () {
             try {
                 const withdrawal = await donationsContract.connect(contractOwner).withdraw(account1.address, withdrawAmount);
                 await withdrawal.wait();
-                expect.fail("Exception not thrown");
+                expect.fail('Exception not thrown');
             }
             catch (err: any) {
                 // Assert
