@@ -16,7 +16,7 @@ npx hardhat help
 REPORT_GAS=true npx hardhat test
 npx hardhat coverage
 npx hardhat run --network localhost scripts/deploy.ts
-npx hardhat run --network localhost scripts/deploy.ts
+npx hardhat --network localhost accountsWithBalance
 TS_NODE_FILES=true npx ts-node scripts/deploy.ts
 npx eslint '**/*.{js,ts}'
 npx eslint '**/*.{js,ts}' --fix

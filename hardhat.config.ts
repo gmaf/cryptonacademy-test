@@ -14,11 +14,11 @@ dotenv.config();
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
-task('accounts', 'Prints the list of accounts', async (taskArgs, hre) => {
+task('accountsWithBalance', 'Prints the list of accounts with balances', async (taskArgs, hre) => {
   const accounts = await hre.ethers.getSigners();
 
   for (const account of accounts) {
-    console.log(account.address);
+    console.log(`Address: ${account.address}|Balance:${await account.getBalance()}`);
   }
 });
 
