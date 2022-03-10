@@ -1,47 +1,99 @@
-# Advanced Sample Hardhat Project
+# Prerequisites:
+1. create .env file
+1. add ALCHEMY_API_KEY to .env
+1. add RINKEBY_PRIVATE_KEY to .env
 
-This project demonstrates an advanced Hardhat use case, integrating other tools commonly used alongside Hardhat in the ecosystem.
+# Rinkeby proof:
 
-The project comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts. It also comes with a variety of other tools, preconfigured to work with the project code.
+## 1. Accounts:
+#### Account1(Owner): [0x8658eba532306C137fAAa31ec0b1d2a16D03B5a8](https://rinkeby.etherscan.io/address/0x8658eba532306c137faaa31ec0b1d2a16d03b5a8)
 
-Try running some of the following tasks:
+#### Account2: [0x65a376d42efE83eAE122Da52B652539d078206c8](https://rinkeby.etherscan.io/address/0x65a376d42efE83eAE122Da52B652539d078206c8)
 
+## Deploy a contract to the rinkeby network
+### [Contract creation Transaction link](https://rinkeby.etherscan.io/tx/0x9d398fee0ffa00641ecae1c06de423f7ae8e044b3fd6d64875d089cf75dd9a8d)
+### Command
 ```shell
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
-npx hardhat test
-npx hardhat node
-npx hardhat help
-REPORT_GAS=true npx hardhat test
-npx hardhat coverage
-npx hardhat run --network localhost scripts/deploy.ts
-npx hardhat --network localhost accountsWithBalance
-TS_NODE_FILES=true npx ts-node scripts/deploy.ts
-npx eslint '**/*.{js,ts}'
-npx eslint '**/*.{js,ts}' --fix
-npx prettier '**/*.{json,sol,md}' --check
-npx prettier '**/*.{json,sol,md}' --write
-npx solhint 'contracts/**/*.sol'
-npx solhint 'contracts/**/*.sol' --fix
+hardhat run --network rinkeby scripts/deploy.ts
 ```
 
-# Etherscan verification
-
-To try out Etherscan verification, you first need to deploy a contract to an Ethereum network that's supported by Etherscan, such as Ropsten.
-
-In this project, copy the .env.example file to a file named .env, and then edit it to fill in the details. Enter your Etherscan API key, your Ropsten node URL (eg from Alchemy), and the private key of the account which will send the deployment transaction. With a valid .env file in place, first deploy your contract:
-
-```shell
-hardhat run --network ropsten scripts/deploy.ts
+### Output
+```
+Deploying contracts with the account: 0x8658eba532306C137fAAa31ec0b1d2a16D03B5a8
+Account balance: 200000000000000000
+Donations deployed to: 0x033aBd77e0CA9484699F43Fc9c14378f46191Bd6
 ```
 
-Then, copy the deployment address and paste it in to replace `DEPLOYED_CONTRACT_ADDRESS` in this command:
 
+## 2. Donate 50 wei
+### [Transaction link](https://rinkeby.etherscan.io/address/0x033aBd77e0CA9484699F43Fc9c14378f46191Bd6)
+
+### Command
 ```shell
-npx hardhat verify --network ropsten DEPLOYED_CONTRACT_ADDRESS "Hello, Hardhat!"
+npx hardhat donate --network rinkeby --contract 0x033aBd77e0CA9484699F43Fc9c14378f46191Bd6 --amount 50 --unit wei
 ```
 
-# Performance optimizations
+### Output
+```
+Successfully donated 50 Wei to address 0x033aBd77e0CA9484699F43Fc9c14378f46191Bd6
+```
 
-For faster runs of your tests and scripts, consider skipping ts-node's type checking by setting the environment variable `TS_NODE_TRANSPILE_ONLY` to `1` in hardhat's environment. For more details see [the documentation](https://hardhat.org/guides/typescript.html#performance-optimizations).
+
+## 3. Check all donater addresses
+### Command
+```shell
+npx hardhat getAllDonaters --network rinkeby --contract 0x033aBd77e0CA9484699F43Fc9c14378f46191Bd6
+```
+### Output
+```
+All donated addresses:
+[ '0x8658eba532306C137fAAa31ec0b1d2a16D03B5a8' ]
+```
+
+
+## 4. Check getDonatedAmountByAddress
+### Command
+```shell
+npx hardhat getDonatedAmountByAddress --network rinkeby --contract 0x033aBd77e0CA9484699F43Fc9c14378f46191Bd6 --donater 0x8658eba532306C137fAAa31ec0b1d2a16D03B5a8
+```
+### Output
+```
+Address: 0x8658eba532306C137fAAa31ec0b1d2a16D03B5a8 donated: 50 Wei to contract: 0x033aBd77e0CA9484699F43Fc9c14378f46191Bd6
+```
+
+## 5. Withdraw 30 wei
+### [Transaction transaction link](https://rinkeby.etherscan.io/tx/0x4fde09af2cfb007f8e688311ed702175392d8ed989322d19dad01c2d8ffa55ac)
+
+### Command
+```shell
+npx hardhat withdraw --network rinkeby --contract 0x033aBd77e0CA9484699F43Fc9c14378f46191Bd6 --toaddress 0x65a376d42efE83eAE122Da52B652539d078206c8 --amount 30 --unit wei
+```
+### Output
+```
+Successfully withdrew 30 Wei from: 0x033aBd77e0CA9484699F43Fc9c14378f46191Bd6 to address 0x65a376d42efE83eAE122Da52B652539d078206c8
+```
+
+
+
+## 6. Additional donate of 77 Gwei
+### [Transaction link](https://rinkeby.etherscan.io/tx/0x3e87db083034b2001b2525d96fe707dee9e2c2bd436cafefdc35591e9f6e8433)
+### Command
+```
+npx hardhat donate --network rinkeby --contract 0x033aBd77e0CA9484699F43Fc9c14378f46191Bd6 --amount 77 --unit gwei
+```
+### Output
+```
+Successfully donated 77000000000 Wei to address 0x033aBd77e0CA9484699F43Fc9c14378f46191Bd6
+```
+
+
+## 7. Additional withdrawal of 33 Gwei
+###[Transaction link](https://rinkeby.etherscan.io/tx/0x6767475300699f531d1a9dc7d7ade9a182dee576b5b727c1ea1bbc7ceb3c87a7)
+### Command
+```
+npx hardhat withdraw --network rinkeby --contract 0x033aBd77e0CA9484699F43Fc9c14378f46191Bd6 --toaddress 0x65a376d42efE83eAE122Da52B652539d078206c8 --amount 33 --unit gwei        
+```
+### Output
+```
+Successfully withdrew 33000000000 Wei from: 0x033aBd77e0CA9484699F43Fc9c14378f46191Bd6 to address 0x65a376d42efE83eAE122Da52B652539d078206c8
+```
