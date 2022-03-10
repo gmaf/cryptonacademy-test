@@ -1,7 +1,9 @@
-export async function isContract(ethers: any, address: string): Promise<{
+export interface ContractCheck{
     isError: boolean,
     errMsg: string
-}> {
+}
+
+export async function isContract(ethers: any, address: string): Promise<ContractCheck> {
     const isAddress = ethers.utils.isAddress(address);
 
     if (!isAddress) {
