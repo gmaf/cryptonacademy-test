@@ -6,7 +6,7 @@ import { isContract } from '../utils/contractUtils';
 
 const validUnits = ['wei', 'gwei', 'eth'];
 // Task for making donations
-// Example: npx hardhat donate --address 0xdD2FD4581271e230360230F9337D5c0430Bf44C0 --amount 1 --unit gwei
+// Example: npx hardhat donate --network localhost --address 0x5FbDB2315678afecb367f032d93F642f64180aa3 --amount 1 --unit gwei
 task('donate', 'Donate some money')
     .addParam('address', 'Contract address', '', types.string)
     .addParam('amount', 'Amount donated in units parameter. Default is 0.', '0', types.string)
