@@ -8,8 +8,7 @@ import 'hardhat-gas-reporter';
 import 'solidity-coverage';
 
 // Tasks
-import './tasks/donateTask';
-import './tasks/getAllDonatersTask';
+import './tasks';
 
 dotenv.config();
 
