@@ -55,7 +55,7 @@ contract Donations {
         require(_amount > 0, "Withdrawal amount must be bigger than zero!");
         require(
             _amount <= contractAddress.balance,
-            "Withdrawal amount must be less than available balance!"
+            "Withdrawal amount must be less or equal available balance!"
         );
         _withdrawalAddress.transfer(_amount);
     }
